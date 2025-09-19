@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Madhya Pradesh Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1 class="header-title">🏛️ Smart MP Dashboard</h1>
+                <span class="header-subtitle">Digital Madhya Pradesh Platform</span>
+            </div>
+            <div class="header-right">
+                <div class="city-selector">
+                    <select id="citySelector" class="form-control city-select">
+                        <option value="">Select City</option>
+                    </select>
+                </div>
+                <button class="btn btn--outline btn--sm" id="themeToggle">🌙 Dark Mode</button>
+                <div class="user-profile" id="userProfile">
+                    <span id="userName">Rahul Sharma</span>
+                    <div class="user-avatar">R</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-content">
+                <div class="nav-section">
+                    <h3 class="nav-section-title">Dashboard</h3>
+                    <ul class="nav-list">
+                        <li><a href="#dashboard" class="nav-link active" data-section="dashboard">🏠 Overview</a></li>
+                        <li><a href="#weather" class="nav-link" data-section="weather">🌤️ Weather</a></li>
+                        <li><a href="#news" class="nav-link" data-section="news">📰 News</a></li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <h3 class="nav-section-title">Civic Services</h3>
+                    <ul class="nav-list">
+                        <li><a href="#civic-issues" class="nav-link" data-section="civic-issues">🚧 Report Issues</a></li>
+                        <li><a href="#maps" class="nav-link" data-section="maps">🗺️ City Map</a></li>
+                        <li><a href="#emergency" class="nav-link" data-section="emergency">🚨 Emergency</a></li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <h3 class="nav-section-title">Analytics</h3>
+                    <ul class="nav-list">
+                        <li><a href="#analytics" class="nav-link" data-section="analytics">📊 City Analytics</a></li>
+                        <li><a href="#profile" class="nav-link" data-section="profile">👤 My Profile</a></li>
+                        <li><a href="#settings" class="nav-link" data-section="settings">⚙️ Settings</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <div>
+                        <h2 id="dashboardTitle">Smart Madhya Pradesh Dashboard</h2>
+                        <p id="dashboardSubtitle">Select a city to view personalized information</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn--outline" id="refreshData">🔄 Refresh</button>
+                        <button class="btn btn--secondary" id="autoLocationBtn">📍 Auto Detect</button>
+                    </div>
+                </div>
+                
+                <!-- City Stats Cards -->
+                <div class="metrics-grid" id="cityMetrics">
+                    <div class="metric-card">
+                        <div class="metric-icon">🌡️</div>
+                        <div class="metric-content">
+                            <h3>Current Temperature</h3>
+                            <div class="metric-value" id="currentTemp">--°C</div>
+                            <div class="metric-change" id="tempCondition">Select city</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">📰</div>
+                        <div class="metric-content">
+                            <h3>Latest News</h3>
+                            <div class="metric-value" id="newsCount">--</div>
+                            <div class="metric-change" id="newsUpdate">Updates available</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">🚧</div>
+                        <div class="metric-content">
+                            <h3>Civic Issues</h3>
+                            <div class="metric-value" id="issuesCount">--</div>
+                            <div class="metric-change" id="issuesStatus">Pending resolution</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">👥</div>
+                        <div class="metric-content">
+                            <h3>Population</h3>
+                            <div class="metric-value" id="cityPopulation">--</div>
+                            <div class="metric-change" id="cityArea">Area: --</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>🌤️ Weather Overview</h3>
+                            <button class="btn btn--sm" id="viewWeatherDetails">View Details</button>
+                        </div>
+                        <div class="card__body">
+                            <div id="weatherWidget" class="weather-widget">
+                                <div class="weather-placeholder">
+                                    <p>Select a city to view weather information</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>📰 Latest News</h3>
+                            <button class="btn btn--sm" id="viewAllNews">View All</button>
+                        </div>
+                        <div class="card__body">
+                            <div id="newsWidget" class="news-widget">
+                                <div class="news-placeholder">
+                                    <p>Select a city to view local news</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="actions-grid">
+                        <button class="action-card" id="reportIssueBtn">
+                            <div class="action-icon">🚧</div>
+                            <div class="action-title">Report Issue</div>
+                            <div class="action-desc">Report civic problems</div>
+                        </button>
+                        <button class="action-card" id="viewMapBtn">
+                            <div class="action-icon">🗺️</div>
+                            <div class="action-title">View Map</div>
+                            <div class="action-desc">Explore city issues</div>
+                        </button>
+                        <button class="action-card" id="emergencyBtn">
+                            <div class="action-icon">🚨</div>
+                            <div class="action-title">Emergency</div>
+                            <div class="action-desc">Quick contacts</div>
+                        </button>
+                        <button class="action-card" id="analyticsBtn">
+                            <div class="action-icon">📊</div>
+                            <div class="action-title">Analytics</div>
+                            <div class="action-desc">City insights</div>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Weather Section -->
+            <section id="weather" class="content-section">
+                <div class="section-header">
+                    <h2>🌤️ Weather Information</h2>
+                    <div class="weather-location" id="weatherLocationInfo"></div>
+                </div>
+                
+                <div class="weather-dashboard">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Current Conditions</h3>
+                        </div>
+                        <div class="card__body">
+                            <div id="currentWeather" class="current-weather">
+                                <!-- Current weather will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>3-Day Forecast</h3>
+                        </div>
+                        <div class="card__body">
+                            <div id="weatherForecast" class="weather-forecast">
+                                <!-- Forecast will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- News Section -->
+            <section id="news" class="content-section">
+                <div class="section-header">
+                    <h2>📰 News & Updates</h2>
+                    <div class="news-filters">
+                        <select id="newsCategory" class="form-control">
+                            <option value="">All Categories</option>
+                            <option value="Development">Development</option>
+                            <option value="Infrastructure">Infrastructure</option>
+                            <option value="Environment">Environment</option>
+                            <option value="Religious">Religious</option>
+                            <option value="Heritage">Heritage</option>
+                        </select>
+                        <select id="newsScope" class="form-control">
+                            <option value="city">City News</option>
+                            <option value="state">State News</option>
+                            <option value="national">National News</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="news-container">
+                    <div id="newsList" class="news-list">
+                        <!-- News items will be populated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Civic Issues Section -->
+            <section id="civic-issues" class="content-section">
+                <div class="section-header">
+                    <h2>🚧 Civic Issue Reporting</h2>
+                    <button class="btn btn--primary" id="newIssueBtn">+ Report New Issue</button>
+                </div>
+                
+                <div class="issues-dashboard">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Recent Issues</h3>
+                            <div class="issue-filters">
+                                <select id="issueCategory" class="form-control">
+                                    <option value="">All Categories</option>
+                                    <option value="Traffic">Traffic</option>
+                                    <option value="Water Supply">Water Supply</option>
+                                    <option value="Roads">Roads</option>
+                                    <option value="Street Lighting">Street Lighting</option>
+                                    <option value="Waste Management">Waste Management</option>
+                                </select>
+                                <select id="issueStatus" class="form-control">
+                                    <option value="">All Status</option>
+                                    <option value="Reported">Reported</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Resolved">Resolved</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card__body">
+                            <div id="issuesList" class="issues-list">
+                                <!-- Issues will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Maps Section -->
+            <section id="maps" class="content-section">
+                <div class="section-header">
+                    <h2>🗺️ Interactive City Map</h2>
+                    <div class="map-controls">
+                        <button class="btn btn--outline" id="toggleIssues">Toggle Issues</button>
+                        <button class="btn btn--outline" id="toggleServices">Toggle Services</button>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <div id="cityMap" class="city-map">
+                        <!-- Interactive map simulation -->
+                        <div class="map-placeholder">
+                            <h3>Interactive Map View</h3>
+                            <p>🗺️ City: <span id="mapCityName">Select a city</span></p>
+                            <div id="mapMarkers" class="map-markers"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="map-legend">
+                        <h4>Legend</h4>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #B4413C;"></div>
+                            <span>High Priority Issues</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #FFC185;"></div>
+                            <span>Medium Priority Issues</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #1FB8CD;"></div>
+                            <span>Government Services</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Emergency Section -->
+            <section id="emergency" class="content-section">
+                <div class="section-header">
+                    <h2>🚨 Emergency Contacts</h2>
+                    <button class="btn btn--primary" id="emergencyCallBtn">📞 Quick Call</button>
+                </div>
+                
+                <div class="emergency-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Statewide Emergency Services</h3>
+                        </div>
+                        <div class="card__body">
+                            <div id="stateEmergencyContacts" class="contact-list">
+                                <!-- Statewide contacts will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>City-Specific Services</h3>
+                        </div>
+                        <div class="card__body">
+                            <div id="cityEmergencyContacts" class="contact-list">
+                                <p>Select a city to view local emergency contacts</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="content-section">
+                <div class="section-header">
+                    <h2>📊 City Analytics & Insights</h2>
+                    <button class="btn btn--secondary" id="exportReport">📄 Export Report</button>
+                </div>
+                
+                <div class="analytics-dashboard">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Issue Resolution Trends</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="issueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>City Performance Metrics</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="performanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card__header">
+                        <h3>State Overview</h3>
+                    </div>
+                    <div class="card__body">
+                        <div id="stateStats" class="state-stats">
+                            <!-- State statistics will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="content-section">
+                <div class="section-header">
+                    <h2>👤 My Profile</h2>
+                    <button class="btn btn--primary" id="editProfileBtn">✏️ Edit Profile</button>
+                </div>
+                
+                <div class="profile-dashboard">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Profile Information</h3>
+                        </div>
+                        <div class="card__body">
+                            <div id="profileInfo" class="profile-info">
+                                <!-- Profile info will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>My Contributions</h3>
+                        </div>
+                        <div class="card__body">
+                            <div id="userContributions" class="contributions">
+                                <!-- User contributions will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="content-section">
+                <div class="section-header">
+                    <h2>⚙️ Settings & Preferences</h2>
+                </div>
+                
+                <div class="settings-dashboard">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Display Preferences</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="settings-group">
+                                <div class="setting-item">
+                                    <label class="form-label">Language</label>
+                                    <select class="form-control" id="languageSetting">
+                                        <option value="english">English</option>
+                                        <option value="hindi">हिंदी</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <label class="form-label">Theme</label>
+                                    <select class="form-control" id="themeSetting">
+                                        <option value="light">Light Mode</option>
+                                        <option value="dark">Dark Mode</option>
+                                        <option value="auto">Auto (System)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Notification Settings</h3>
+                        </div>
+                        <div class="card__body">
+                            <div id="notificationSettings" class="notification-settings">
+                                <!-- Notification settings will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for forms and details -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Details</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content will be dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">
+        <div class="toast-content">
+            <div class="toast-icon" id="toastIcon">✅</div>
+            <div class="toast-message" id="toastMessage">Action completed successfully</div>
+        </div>
+        <button class="toast-close" id="toastClose">&times;</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
